@@ -29,7 +29,7 @@ loop:					#loop for 5 input
 	mfhi	$t6			#get remainder
 	
 	bne	$t5, $t6, eitherOne	#checking if t5 and t6 is not equal jump to individual
-	
+	bne	$t5, 0, neitherOne		#its neither jump to that
 	la	$a0, both_msg		#giving the address of both_msg
 	li	$v0, 4			#assigning 4 to v0
 	syscall 
@@ -37,15 +37,20 @@ loop:					#loop for 5 input
 	add	$t3, $t3, 1		#incrementing input counter
 	b loop
 
-
-eitherOne: 				#it can only be 3 or 2
-	beq	$t5, 0, itsTwo		#if mod against 2
-	beq	$t6, 0, itsThree	#if mode against 3
+neitherOne: 				#its neither
+	
 	la	$a0, neither_msg	#giving the address of neither_msg
 	li	$v0, 4			#assigning 4 to v0
 	syscall
 	add	$t3, $t3, 1		#incrementing input counter
 	b loop 
+
+eitherOne: 				#it can only be 3 or 2
+	beq	$t5, 0, itsTwo		#if mod against 2
+	beq	$t6, 0, itsThree	#if mode against 3
+
+	b neitherOne			#jump to neither loop
+
 	 
 
 itsThree:				#its Three
@@ -71,7 +76,7 @@ exit:
 	
 	.data
 
-enter_msg:	.asciiz "Enter a number: "
+enter_msg:	.asciiz "Enter a number:"
 output.msg:	.asciiz "It is divisible by "
 both_msg:	.asciiz	"It is divisible by both 2 and 3 \n"
 two_msg:	.asciiz "It is divisible by 2 \n"
