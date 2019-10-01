@@ -18,13 +18,16 @@ main:
 	move	$t0, $v0		#moving $v0 return val to a register t0
 
 	li	$t1, 2			#loading int 1 into t1
-	li	$t2, 9			#loading int 9 into t2
+	li	$t2, 10			#loading int 9 into t2
 
 loop:					#loop to find divisors
-	beq	$t1, $t2, endloop	#if 9 is reached jump to endloop
+	beq	$t1, $t2, exit		#if 9 is reached jump to endloop
 	div	$t0, $t1		#divide integer by t1
 	mfhi	$t3			#move remainder to t4
 	beq	$t3, 0, printr		#checks if remainder is 0
+	add	$t1, $t1, 1
+	b	loop
+	
 
 printr:
 	move	$a0, $t1		#move t1 to a0
@@ -34,11 +37,7 @@ printr:
 	b loop
 	
 
-		
-	
-	
-
-
+				
 exit:
 	li	$v0, 10
 	syscall
