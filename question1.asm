@@ -4,6 +4,8 @@
 #		$a0 --syscall parameter
 #		$v0 -- ssyscall parameter
 #		$t0 -- holds the input
+#		$t1 -- holds 1 incrementer
+#		$t2 -- holds 9. max numbers
 
 	.text
 main:
@@ -14,6 +16,28 @@ main:
 	li	$v0, 5			#load read_int to v0
 	syscall				#syscall
 	move	$t0, $v0		#moving $v0 return val to a register t0
+
+	li	$t1, 2			#loading int 1 into t1
+	li	$t2, 9			#loading int 9 into t2
+
+loop:					#loop to find divisors
+	beq	$t1, $t2, endloop	#if 9 is reached jump to endloop
+	div	$t0, $t1		#divide integer by t1
+	mfhi	$t3			#move remainder to t4
+	beq	$t3, 0, printr		#checks if remainder is 0
+
+printr:
+	move	$a0, $t1		#move t1 to a0
+	li	$v0, 1			#print int to v0
+	syscall					
+	add	$t1, $t1, 1		#incrementing t1
+	b loop
+	
+
+		
+	
+	
+
 
 exit:
 	li	$v0, 10
