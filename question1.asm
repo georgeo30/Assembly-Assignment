@@ -19,22 +19,32 @@ main:
 
 	li	$t1, 2			#loading int 1 into t1
 	li	$t2, 10			#loading int 9 into t2
+	la	$a0, da_msg		#loadnew line to a0
+	li	$v0, 4			#loading print_string to v0	
+	syscall
 
 loop:					#loop to find divisors
 	beq	$t1, $t2, exit		#if 9 is reached jump to endloop
 	div	$t0, $t1		#divide integer by t1
 	mfhi	$t3			#move remainder to t4
+
 	beq	$t3, 0, printr		#checks if remainder is 0
-	add	$t1, $t1, 1
-	b	loop
+	add	$t1, $t1, 1		#increment t1
+	b	loop			#loop back to the top
 	
 
 printr:
 	move	$a0, $t1		#move t1 to a0
 	li	$v0, 1			#print int to v0
-	syscall					
+	syscall
+	
+	la	$a0, new_line		#loadnew line to a0
+	li	$v0, 4			#loading print_string to v0	
+	syscall
+			
+			
 	add	$t1, $t1, 1		#incrementing t1
-	b loop
+	b loop				#go back to the loop
 	
 
 				
@@ -44,6 +54,8 @@ exit:
 
 	.data
 enter_msg:	.asciiz "Enter a number: \n"
+da_msg:		.asciiz "The single digit divisors are: \n"
+new_line:	.asciiz "\n"
 
 
 
