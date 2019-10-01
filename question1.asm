@@ -3,6 +3,7 @@
 #Registers Used:
 #		$a0 --syscall parameter
 #		$v0 -- ssyscall parameter
+#		$t0 -- holds the input
 
 	.text
 main:
@@ -10,12 +11,16 @@ main:
 	li	$v0, 4			#loading print_string to v0	
 	syscall
 
+	li	$v0, 5			#load read_int to v0
+	syscall				#syscall
+	move	$t0, $v0		#moving $v0 return val to a register t0
+
 exit:
 	li	$v0, 10
 	syscall
 
 	.data
-enter_msg:	.asciiz "Enter a number"
+enter_msg:	.asciiz "Enter a number: \n"
 
 
 
